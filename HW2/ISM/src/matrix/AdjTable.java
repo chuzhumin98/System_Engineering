@@ -46,15 +46,13 @@ public class AdjTable {
 	 * @return
 	 */
 	public String DisplayPath(int len) {
-		pathesString = ""; //初始化该字符串为空
-		int[] path = new int [len]; //用来存储某一条道路
-		int index = 0; //记录当前path的索引值
+		this.pathesString = ""; //初始化该字符串为空
+		int[] path = new int [len+1]; //用来存储某一条道路,当然度为2的道路需要经过3个节点
 		for (int i = 0; i < this.size; i++) {
 			path[0] = i; //定义起点
-			index = 1;
-			
+			this.GoPath(path, 1); //初始时，path的索引长度均为1
 		}
-		return null;
+		return this.pathesString;
 	}
 	
 	/**
@@ -65,22 +63,31 @@ public class AdjTable {
 	 */
 	private void GoPath(int[] path, int index) {
 		if (index == path.length) {
-			this.pathesString += "";
+			this.pathesString += this.GetSinglePath(path) + "\n";
+			return;
+		}
+		for (Integer item: this.adjTable.get(path[index-1])) {
+			path[index] = item;
+			this.GoPath(path, index+1);
 		}
 	}
 	
 	/**
-	 * 加载入某一条path的数据
+	 * 返回某一条path的数据，数据大小1~size
 	 * 
 	 * @param path
+	 * @return
 	 */
-	private void GetSinglePath(int[] path) {
-		String tempPath = ""; //临时存储这条path信息的字符串
-		
+	private String GetSinglePath(int[] path) {
+		String tempPath = String.valueOf(path[0]+1); //临时存储这条path信息的字符串
+		for (int i = 1; i < path.length; i++) {
+			tempPath += "->"+(path[i]+1);
+		}
+		return tempPath;
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		AdjTable adj1 = new AdjTable("input/matrix_1_2.txt");
-		
+		System.out.println(adj1.DisplayPath(2));
 	}
 }
