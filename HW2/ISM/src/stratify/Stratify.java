@@ -111,7 +111,7 @@ public class Stratify {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		Stratify st1 = new Stratify("input/matrix.txt");
+		Stratify st1 = new Stratify("input/matrix_1_1.txt");
 		System.out.println("following shows the stratified result"
 				+ "(from top to bottom):\n"+st1);
 	}
