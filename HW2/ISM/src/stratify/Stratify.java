@@ -36,7 +36,7 @@ public class Stratify {
 	}
 	
 	/**
-	 * 进行层次划分
+	 * 进行层次划分（自顶向下）
 	 */
 	public void DoStratify() {
 		if (this.structure != null) {
@@ -92,10 +92,66 @@ public class Stratify {
 	}
 	
 	/**
+	 * 进行层次划分（自底向上）
+	 */
+	public void DoReverseStratify() {
+		if (this.structure != null) {
+			return; //这表明之前已经进行过了层次划分
+		}
+		this.structure = new ArrayList<ArrayList<ArrayList<Integer>>>();
+		ArrayList<Integer> candidate = new ArrayList<Integer>(); 
+		    //候选集，存储还未被划分层次的节点
+		ArrayList<Integer> active = new ArrayList<Integer>(); //活跃集，当前层次包含的节点
+		for (int i = 0; i < this.size; i++) { //初始化候选集
+			candidate.add(i);
+		}
+		while (candidate.size() > 0) {
+			for (Integer comparing: candidate) {
+				boolean isActive = true; //记录元素comparing是否需要记入活跃集
+				for (Integer compared: candidate) {
+					if (this.matrix[comparing][compared] == 0 && 
+							this.matrix[compared][comparing] == 1) {
+						//如果能够指向comparing节点的节点与其不存在互指关系，则其不是顶层节点
+						isActive = false;
+						break;
+					}
+				}
+				if (isActive) {
+					active.add(comparing);
+				}
+			}
+			for (Integer item: active) { //判断完成后，将活跃节点移除候选集
+				candidate.remove(item);
+				//System.out.print(item+" ");
+			}
+			//System.out.println();
+			ArrayList<ArrayList<Integer>> activeLayer = 
+					new ArrayList<ArrayList<Integer>>();
+			    //记录当前活跃层的结构
+			while (active.size() > 0) {
+				ArrayList<Integer> myGroup = new ArrayList<Integer>();
+				int represent = active.get(0); //找一个新团体的代表元素
+				myGroup.add(represent);
+				active.remove(0); //在活跃集中删除代表元
+				for (int i = active.size()-1; i >= 0; i--) { //从后往前避免删除时有影响
+					Integer item = active.get(i);
+					if (this.matrix[represent][item] == 1 &&
+							this.matrix[item][represent] == 1) {
+						myGroup.add(item);
+						active.remove(item);
+					}
+				}
+				activeLayer.add(myGroup);
+			}
+			this.structure.add(activeLayer);
+		}
+	}
+	
+	/**
 	 * 将分层结果写成string输出
 	 */
 	public String toString() {
-		this.DoStratify();
+		//this.DoStratify();
 		String results = "";
 		for (ArrayList<ArrayList<Integer>> layer: this.structure) {
 			for (ArrayList<Integer> group: layer) {
@@ -111,8 +167,12 @@ public class Stratify {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		Stratify st1 = new Stratify("input/matrix_1_1.txt");
+		Stratify st1 = new Stratify("input/matrix_2.txt");
+		st1.DoReverseStratify();
 		System.out.println("following shows the stratified result"
-				+ "(from top to bottom):\n"+st1);
+				+ "(from bottom to top):\n"+st1);
+		//st1.DoStratify();
+		//System.out.println("following shows the stratified result"
+			//	+ "(from top to bottom):\n"+st1);
 	}
 }
