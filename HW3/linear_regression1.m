@@ -32,7 +32,14 @@ function [ahat, bhat, F, Falpha, rsquare, CI] = linear_regression1(data, alpha)
         plot(X, Y, 'b','LineWidth',2)
         hold on
         plot(data(:,2), data(:,1),'r.','MarkerSize',15)
-        legend('拟合直线','数据点','Location','NorthEast')
+        plot(X, Y+CI(1), 'm','LineWidth',1)
+        plot(X, Y+CI(2), 'm', 'LineWidth',1)
+        legend('拟合直线','数据点','置信区间上下边界','Location','NorthEast')
+        xlabel('x坐标轴')
+        ylabel('y坐标轴')
+        title('一元线性回归拟合效果图')
+        box on
+        grid on
         saveas(gcf, '一维线性拟合效果图.png')
     else
         sprintf('我们没有足够的信心拒绝原假设')
