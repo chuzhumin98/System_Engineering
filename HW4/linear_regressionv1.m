@@ -11,7 +11,7 @@ function [beta, F, Falpha, CI] = linear_regressionv1(Y, X, alpha)
     beta = A^(-1) * B; %获得参数向量
     %% 进行F-检验
     Ybar = mean(Y); %Y的均值
-    Yhat = beta' * Xused; %估计的因变量的值
+    Yhat = beta' * Xused; %估计的自变量的值
     ESS = (Yhat - Ybar) * (Yhat - Ybar)'; %解释平方和
     RSS = (Yhat - Y') * (Yhat - Y')'; %剩余平方和
     F = (N - n - 1) * ESS / n / RSS; %计算出来F值
