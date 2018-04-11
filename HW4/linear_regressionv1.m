@@ -1,11 +1,11 @@
-%% 实现一般情况的多元线性回归算法，同时能够自适应地进行病态线性回归
+%% 仅实现一般情况的多元线性回归算法
 
 function [beta, F, Falpha, CI] = linear_regressionv1(Y, X, alpha)
     %% 计算出多元线性回归的参数估计
     N = length(Y); %数据点的个数
     n = length(X(1,:)); %特征的维数
     beta = zeros(n+1, 1); %初始化特征，常数项在最前面
-    Xused = [ones(1,N); X']; %增广的因变量向量
+    Xused = [ones(1,N);X']; %增广的因变量向量
     A = Xused * Xused'; %XX^T
     B = Xused * Y;
     beta = A^(-1) * B; %获得参数向量
