@@ -18,7 +18,6 @@ function [beta, F, Falpha, CI] = linear_regressionv3(Y, X, alpha)
     [V, Lambda] = eig(A); %得到相应的特征向量和特征值
     V = fliplr(V); %将矩阵倒序排列
     lambda = wrev(diag(Lambda)); %将特征向量倒序排列
-    lambda
     eta = 0.01; %设置一个筛选特征值的阈值
     %% 找到所需的特征维数m
     for m = 1:n+1
@@ -27,14 +26,12 @@ function [beta, F, Falpha, CI] = linear_regressionv3(Y, X, alpha)
         end
     end
     %% 用病态线性回归进行参数估计（多元线性回归在m=n+1时与之等价，在报告中会给予证明）
-    m
     Qm = V(:,1:m);
     Z = Qm' * Xused;
     dhat = (Z * Z')^(-1) * Z * Y;
     chat = Qm * dhat; %最终的系数表
     %% 对所得的参数进行归一化的反变换
     beta = zeros(n+1, 1); %初始化特征，常数项在最前面
-    beta = chat;
     beta(1) = chat(1)-mu' * (chat ./ sigma); %得到反变换后的常数值
     beta(2:n+1) = chat(2:n+1) ./ sigma(2:n+1);
     %% 进行F-检验
@@ -42,7 +39,12 @@ function [beta, F, Falpha, CI] = linear_regressionv3(Y, X, alpha)
     Yhat = chat' * Xused; %估计的因变量的值
     ESS = (Yhat - Ybar) * (Yhat - Ybar)'; %解释平方和
     RSS = (Yhat - Y') * (Yhat - Y')'; %剩余平方和
-    freedom = min(n, m); %确定自由度
+    freedom = m; %确定自由度
+    m
+    lambda
+	if (sum(lambda(m+1:n+1)) < 1e-12)
+		freedom = m - 1;
+	end
     F = (N - freedom - 1) * ESS / freedom / RSS; %计算出来F值
     Falpha = finv(1-alpha, freedom, N-freedom-1);
     CI = []; %置信区间上下移动值

@@ -28,7 +28,12 @@ function [chat, F, Falpha, CI] = linear_regressionv2(Y, X, alpha)
     Yhat = chat' * Xused; %估计的自变量的值
     ESS = (Yhat - Ybar) * (Yhat - Ybar)'; %解释平方和
     RSS = (Yhat - Y') * (Yhat - Y')'; %剩余平方和
-    freedom = min(n, m); %确定自由度
+    freedom = m; %确定自由度
+    m
+    lambda
+	if (sum(lambda(m+1:n+1)) < 1e-12)
+		freedom = m - 1;
+	end
     F = (N - freedom - 1) * ESS / freedom / RSS; %计算出来F值
     Falpha = finv(1-alpha, freedom, N-freedom-1);
     CI = []; %置信区间上下移动值
