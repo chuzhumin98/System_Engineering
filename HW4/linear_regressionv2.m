@@ -18,7 +18,6 @@ function [chat, F, Falpha, CI] = linear_regressionv2(Y, X, alpha)
         end
     end
     %% 用病态线性回归进行参数估计（多元线性回归在m=n+1时与之等价，在报告中会给予证明）
-    m = 1;
     Qm = V(:,1:m);
     Z = Qm' * Xused;
     dhat = (Z * Z')^(-1) * Z * Y;
