@@ -22,7 +22,6 @@ function [pcs, cprs_data, cprs_c] = pca_compress(data, rerr)
             break
         end
     end
-    m
     pcs = V(:,1:m); %Ö÷³É·Ö
     cprs_data = data * pcs;
 end
