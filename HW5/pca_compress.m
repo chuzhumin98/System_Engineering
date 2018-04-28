@@ -15,7 +15,7 @@ function [pcs, cprs_data, cprs_c] = pca_compress(data, rerr)
     A = data' * data; %得到一个n*n的矩阵
     [V, Lambda] = eig(A); %得到相应的特征向量和特征值
     V = fliplr(V); %将矩阵倒序排列
-    lambda = wrev(diag(Lambda)); %将特征向量倒序排列
+    lambda = wrev(diag(Lambda)) %将特征向量倒序排列
     %% 找到所需的特征维数m
     for m = 1:length(lambda)
         if (sum(lambda(1:m))/sum(lambda) >= 1 - rerr)

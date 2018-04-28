@@ -5,7 +5,7 @@
 %  recon_data: N*n，恢复后的数据
 
 function recon_data = pca_reconstruct(pcs, cprs_data, cprs_c)
-   recon_data = cprs_data * pcs';
+   recon_data = cprs_data * pcs' * (pcs * pcs')^(-1); %注意矩阵定义与公式略有不同，做了一个转置
    for i = 1:length(recon_data)
        recon_data(i,:) = cprs_c(2,:) .* recon_data(i,:) + cprs_c(1,:);
    end
