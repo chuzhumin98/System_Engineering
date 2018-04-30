@@ -28,7 +28,9 @@ for i=1:length(size)
     thisSizeData = data(shuffleOrder(1:size(i)),:);
     for j=1:length(ks)
         tic
-        label = kmeans_clustering(thisSizeData, ks(j));
+        for k=1:5
+            label = kmeans_clustering(thisSizeData, ks(j));
+        end
         t(j,i) = toc;
     end
 end
@@ -43,4 +45,4 @@ ylabel('cost time')
 title('time vs size')
 legend('k=3','k=5','k=7','Location','NorthWest')
 box on; grid on
-saveas(gcf, 'time-size.png')
+saveas(gcf, 'img/time-size.png')
